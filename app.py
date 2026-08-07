@@ -63,7 +63,8 @@ with st.sidebar:
             },
             {
                 "role":"assistant",
-                "content":INITIAL_ASSISTANT_MESSAGE
+                "content":INITIAL_ASSISTANT_MESSAGE,
+                "description": "This is the initial message from the assistant."
             }
         ]
         st.rerun()
@@ -103,7 +104,24 @@ for message in st.session_state.messages:
 
     render_chat_message(message["role"], message["content"])
 
-prompt=st.chat_input("Type your message...")
+# Prompt suggestions in array
+prompt_suggestions = [
+    "How do I fix a bug in my code?",
+    "Explain this error message.",
+    "What is the best way to optimize this function?",
+    "How can I improve the performance of my application?",
+]
+selected_prompt = None
+has_user_messages = any(msg.get("role") == "user" for msg in st.session_state.messages)
+if not has_user_messages:
+    st.markdown("#### Prompt Suggestions")
+    for suggestion in prompt_suggestions:
+        if st.button(suggestion, key=f"suggestion_{suggestion}"):
+            selected_prompt = suggestion
+
+prompt = st.chat_input("Type your message...")
+if not prompt and selected_prompt:
+    prompt = selected_prompt
 
 if prompt:
 
@@ -193,7 +211,7 @@ if prompt:
 
                         reply = sanitize_reply(assistant_reply)
 
-                        print(f"reply: {reply}")
+                        # print(f"reply: {reply}")
 
                     except Exception as e:
                         reply=f"❌ {e}"
