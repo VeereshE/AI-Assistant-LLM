@@ -69,10 +69,12 @@ with st.sidebar:
 
 
 st.markdown("""
-
-    <div class="title">
-    AI Assistant 👋🏻
+    <div class="fixed-title-bar">
+        <div class="title">
+        AI Assistant 👋🏻
+        </div>
     </div>
+    <div class="title-spacer"></div>
 """, unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
