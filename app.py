@@ -35,7 +35,7 @@ def render_chat_message(role: str, content: str) -> None:
                 st.markdown(content)
 
 st.set_page_config(
-    page_title="AI ChatBot",
+    page_title="Your Smart AI Assistant",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
