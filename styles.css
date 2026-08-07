@@ -3,6 +3,9 @@
 /* Background */
 
 .stApp {
+  --chat-input-bottom: 22px;
+  --chat-input-height: 92px;
+  --suggestion-gap: 8px;
   background:
     radial-gradient(
       circle at top left,
@@ -98,7 +101,7 @@ footer {
 
 [data-testid="stChatInput"] {
   position: fixed;
-  bottom: 22px;
+  bottom: var(--chat-input-bottom);
   left: calc(50% + 145px);
   transform: translateX(-50%);
   width: min(860px, 72vw);
@@ -238,6 +241,44 @@ footer {
 [data-testid="stChatInput"] svg {
   width: 1.1rem !important;
   height: 1.1rem !important;
+}
+
+/* Prompt suggestions dock */
+
+div[data-testid="stVerticalBlock"]:has(.suggestion-dock-anchor) {
+  position: fixed;
+  left: calc(50% + 145px);
+  transform: translateX(-50%);
+  bottom: calc(var(--chat-input-bottom) + var(--chat-input-height) + var(--suggestion-gap));
+  width: min(860px, 72vw);
+  z-index: 850;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 24, 38, 0.9),
+    rgba(13, 21, 34, 0.86)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(10px);
+}
+
+.suggestion-label {
+  color: #9fb4d4;
+  font-size: 0.83rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0 0 8px 2px;
+}
+
+div[data-testid="stVerticalBlock"]:has(.suggestion-dock-anchor) .stButton > button {
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  min-height: 36px;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
 }
 
 /* Sidebar */
@@ -414,6 +455,12 @@ section[data-testid="stSidebar"] .block-container {
 }
 
 @media (max-width: 900px) {
+  .stApp {
+    --chat-input-bottom: 12px;
+    --chat-input-height: 82px;
+    --suggestion-gap: 6px;
+  }
+
   .block-container {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -439,8 +486,15 @@ section[data-testid="stSidebar"] .block-container {
   [data-testid="stChatInput"] {
     left: 50%;
     width: calc(100vw - 1rem);
-    bottom: 12px;
+    bottom: var(--chat-input-bottom);
     padding: 10px 10px;
+  }
+
+  div[data-testid="stVerticalBlock"]:has(.suggestion-dock-anchor) {
+    left: 50%;
+    width: calc(100vw - 1rem);
+    bottom: calc(var(--chat-input-bottom) + var(--chat-input-height) + var(--suggestion-gap));
+    padding: 8px 10px;
   }
 
   .title {
