@@ -3,10 +3,17 @@ from groq import Groq
 from dotenv import load_dotenv
 import httpx
 import os
+import re
 
 load_dotenv()
 
 INITIAL_ASSISTANT_MESSAGE = "Hi, I'm AI Assistant. How can I help you today?"
+
+
+def sanitize_reply(text: str) -> str:
+    # Remove any leaked internal reasoning blocks.
+    cleaned = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL | re.IGNORECASE)
+    return cleaned.strip()
 
 
 def load_css(file_name: str) -> None:
@@ -130,12 +137,63 @@ if prompt:
                             http_client=httpx.Client(verify=False)
                         )
 
-                        response=client.chat.completions.create(
-                            model="llama-3.3-70b-versatile",
-                            messages=st.session_state.messages
+                        # response=client.chat.completions.create(
+                        #      model="llama-3.3-70b-versatile",
+                        #      stream=False,
+                        #      messages=st.session_state.messages
+
+                        #     # model="qwen/qwen3.6-27b",
+                        #     # stream=False,
+                        #     # reasoning_format="raw",
+                        #     # messages=st.session_state.messages
+                            
+                        # )
+
+                        # Latest user message
+                        user_message = st.session_state.messages[-1]["content"].lower()
+
+                        reasoning_keywords = [
+                            "error",
+                            "issue",
+                            "bug",
+                            "fix",
+                            "debug",
+                            "resolve",
+                            "problem",
+                            "exception",
+                            "traceback",
+                            "stack trace",
+                            "not working",
+                            "failed",
+                            "crash",
+                            "why",
+                            "how to fix",
+                            "module not found",
+                            "typeerror",
+                            "valueerror",
+                            "attributeerror",
+                        ]
+
+                        # Select model
+                        if any(keyword in user_message for keyword in reasoning_keywords):
+                            model = "qwen/qwen3.6-27b"
+                            extra_args = {}
+                        else:
+                            model = "llama-3.3-70b-versatile"
+                            extra_args = {}
+
+                        response = client.chat.completions.create(
+                            model=model,
+                            messages=st.session_state.messages,
+                            stream=False,
+                            **extra_args
                         )
 
-                        reply=response.choices[0].message.content
+                        assistant_reply = response.choices[0].message.content
+
+                        reply = sanitize_reply(assistant_reply)
+
+                        print(f"reply: {reply}")
 
                     except Exception as e:
                         reply=f"❌ {e}"
