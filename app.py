@@ -46,34 +46,45 @@ load_css("styles.css")
 
 
 with st.sidebar:
+
+    if st.button("+ Start New Chat"):
+            st.session_state.messages = [
+                {
+                    "role":"system",
+                    "content":"You are a helpful assistant."
+                },
+                {
+                    "role":"assistant",
+                    "content":INITIAL_ASSISTANT_MESSAGE,
+                    "description": "This is the initial message from the assistant."
+                }
+            ]
+            st.rerun()
+
+    st.divider()
+
+
     st.markdown("""
     <div class="sidebar-card">
-        <p class="sidebar-title">Pulse Console</p>
-        <p class="sidebar-subtitle">Groq-powered assistant with a cleaner control panel.</p>
+        <p class="sidebar-title">Your AI Assistant</p>
+        <p class="sidebar-subtitle">🚀 Lightning-Fast Responses – Get answers and insights within seconds.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    st.divider()
-
-    if st.button("🗑 Clear Conversation"):
-        st.session_state.messages = [
-            {
-                "role":"system",
-                "content":"You are a helpful assistant."
-            },
-            {
-                "role":"assistant",
-                "content":INITIAL_ASSISTANT_MESSAGE,
-                "description": "This is the initial message from the assistant."
-            }
-        ]
-        st.rerun()
 
     st.divider()
 
-    st.metric("Model","Llama 3.3 70B")
-    st.metric("Provider","Groq")
-    st.metric("Status","🟢 Online")
+    st.markdown("""
+    <div class="sidebar-card">
+        <p class="sidebar-title">Model Information</p>
+        <p class="sidebar-subtitle">Details about the AI model and provider.</p>
+        <span class="sidebar-info"><strong>Model:</strong> qwen/qwen3.6-27b & llama-3.3-70b-versatile</span><br>
+        <span class="sidebar-info"><strong>Provider:</strong> Groq</span><br>
+        <span class="sidebar-info"><strong>API Key:</strong> Required</span>
+    </div>
+        
+
+    """, unsafe_allow_html=True)
 
 
 st.markdown("""
@@ -115,6 +126,7 @@ selected_prompt = None
 has_user_messages = any(msg.get("role") == "user" for msg in st.session_state.messages)
 if not has_user_messages:
     st.markdown("#### Prompt Suggestions")
+
     for suggestion in prompt_suggestions:
         if st.button(suggestion, key=f"suggestion_{suggestion}"):
             selected_prompt = suggestion
@@ -124,7 +136,6 @@ if not prompt and selected_prompt:
     prompt = selected_prompt
 
 if prompt:
-
     st.session_state.messages.append(
         {
             "role":"user",
@@ -155,42 +166,10 @@ if prompt:
                             http_client=httpx.Client(verify=False)
                         )
 
-                        # response=client.chat.completions.create(
-                        #      model="llama-3.3-70b-versatile",
-                        #      stream=False,
-                        #      messages=st.session_state.messages
-
-                        #     # model="qwen/qwen3.6-27b",
-                        #     # stream=False,
-                        #     # reasoning_format="raw",
-                        #     # messages=st.session_state.messages
-                            
-                        # )
-
                         # Latest user message
                         user_message = st.session_state.messages[-1]["content"].lower()
 
-                        reasoning_keywords = [
-                            "error",
-                            "issue",
-                            "bug",
-                            "fix",
-                            "debug",
-                            "resolve",
-                            "problem",
-                            "exception",
-                            "traceback",
-                            "stack trace",
-                            "not working",
-                            "failed",
-                            "crash",
-                            "why",
-                            "how to fix",
-                            "module not found",
-                            "typeerror",
-                            "valueerror",
-                            "attributeerror",
-                        ]
+                        reasoning_keywords = ["error","issue", "bug","fix", "debug", "resolve","problem","exception","traceback","stack trace","not working","failed","crash","why","how to fix","module not found","typeerror","valueerror","attributeerror","indexerror","keyerror","importerror","syntaxerror","nameerror","zerodivisionerror","recursionerror","memoryerror","overflowerror","assertionerror","connectionerror","timeouterror"]
 
                         # Select model
                         if any(keyword in user_message for keyword in reasoning_keywords):
