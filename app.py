@@ -55,37 +55,37 @@ with st.sidebar:
                 },
                 {
                     "role":"assistant",
-                    "content":INITIAL_ASSISTANT_MESSAGE,
-                    "description": "This is the initial message from the assistant."
+                    "content":INITIAL_ASSISTANT_MESSAGE
                 }
             ]
             st.rerun()
 
     st.divider()
 
-
     st.markdown("""
-    <div class="sidebar-card">
-        <p class="sidebar-title">Your AI Assistant</p>
-        <p class="sidebar-subtitle">🚀 Lightning-Fast Responses – Get answers and insights within seconds.</p>
+   <h1 style="margin-top:0; text-align:center;"> 🤖 Your AI Assistant </h1>
+
+    <p style="color:#c9d1d9; line-height:1.6; margin-bottom:18px;">
+        Your all-in-one AI companion for coding, learning, writing, and
+        problem-solving.
+    </p>
+
+    <div style="display:flex; flex-direction:column; gap:10px; color:#ffffff;">
+        <div>⚡ <strong>Fast Responses</strong></div>
+        <div>🧠 <strong>Smart Reasoning</strong></div>
+        <div>💻 <strong>Coding Support</strong></div>
+        <div>✍️ <strong>Content Creation</strong></div>
     </div>
+
+    <br>
+
+    <strong style="color:white;">Type your message...</strong>
+
+    <p style="margin-top:10px; line-height:1.6;">
+        Ask anything—from coding and debugging to writing, research,
+        and creative ideas.
+    </p>
     """, unsafe_allow_html=True)
-
-
-    st.divider()
-
-    st.markdown("""
-    <div class="sidebar-card">
-        <p class="sidebar-title">Model Information</p>
-        <p class="sidebar-subtitle">Details about the AI model and provider.</p>
-        <span class="sidebar-info"><strong>Model:</strong> qwen/qwen3.6-27b & llama-3.3-70b-versatile</span><br>
-        <span class="sidebar-info"><strong>Provider:</strong> Groq</span><br>
-        <span class="sidebar-info"><strong>API Key:</strong> Required</span>
-    </div>
-        
-
-    """, unsafe_allow_html=True)
-
 
 st.markdown("""
     <div class="fixed-title-bar">
