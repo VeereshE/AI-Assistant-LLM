@@ -71,7 +71,7 @@ with st.sidebar:
     </p>
 
     <div style="display:flex; flex-direction:column; gap:10px; color:#ffffff;">
-        <div>⚡ <strong>Fast Responses</strong></div>
+        <div>⚡ <strong>Fast Responses.........</strong></div>
         <div>🧠 <strong>Smart Reasoning</strong></div>
         <div>💻 <strong>Coding Support</strong></div>
         <div>✍️ <strong>Content Creation</strong></div>
